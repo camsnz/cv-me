@@ -1,6 +1,13 @@
 @page {
     size: A4;
-    margin: 0mm;
+    margin: 0;
+    padding: 0;
+    border: 0;
+
+    margin: 5mm;
+    background: #c5c576;
+    // margin-top: auto;
+    // margin-bottom: auto;
 }
 
 html {
@@ -25,10 +32,10 @@ body {
     // width: 100%;
     height: 100%;
 
-    margin: 0.5rem;
-    /* margin: 0.5rem; */
+    margin: 0;
     padding: 0;
-    /* padding: 0.2rem; */
+    border: 0;
+
     border-top: solid 5px MidnightBlue;
     border-bottom: solid 5px MidnightBlue;
 
@@ -64,19 +71,44 @@ div:nth-of-type(even) {
 }
   
 h1, h2, h3, h4, h5, h6 {
+    display: flex;
+    justify-content: space-between;
     color: MidnightBlue;
+    span {
+        font-size: 1rem;
+        color: #45818e;
+        width: 100%;
+    }
 }
 
 h1 {
+    page-break-after: avoid;
     font-size: 1.7rem;
     color: MidnightBlue;
 
     padding: 0;
     margin: 0;
+    border: 0;
+
+    margin-top: 0.6rem;
+    margin-bottom: 0.6rem;
+}
+
+h3 {
+    padding: 0;
+    margin: 0;
     margin-top: 0.6rem;
     margin-bottom: 0.6rem;
     border: 0;
+
+    border-top: solid thin black;
 }
+
+code {
+    display: flex;
+    justify-content: flex-end;
+}
+
 p,div,span,section {
     padding: 0;
     margin: 0;
@@ -95,6 +127,7 @@ p,div,span,section {
 
 div.work-history {
     table {
+        page-break-inside: avoid;
         border-collapse: collapse;
         width: 100%;
     }
