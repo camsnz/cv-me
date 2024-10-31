@@ -12,8 +12,9 @@
     "gh":      "latest",
     "go-task": "latest",
     // languages etc
-    "deno": "latest",
+    "deno":      "latest",
     "dart-sass": "latest",
+    "pandoc":    "latest",
   },
   "shell": {
     "init_hook": [
