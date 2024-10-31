@@ -1,0 +1,30 @@
+{
+  "env":     {},
+  "$schema": "https://raw.githubusercontent.com/jetify-com/devbox/0.13.1/.schema/devbox.schema.json",
+  "packages": {
+    // base CLI
+    "envsubst": "latest",
+    "gum":      "latest",
+    "jq":       "latest",
+    "yq-go":    "latest",
+    // CI
+    "act":     "latest",
+    "gh":      "latest",
+    "go-task": "latest",
+    // languages etc
+    "deno": "latest",
+    "dart-sass": "latest",
+  },
+  "shell": {
+    "init_hook": [
+      // "echo 'root devbox shell loaded'",
+      // "echo task --completion bash > /dev/null 2>&1 || true # broken ;(",
+    ],
+    "scripts": {
+      "test": [
+        "[[ \"$(grep --version)\" != *\"compatible\"* ]] && [[ \"$(grep --version | head -n 1)\" == *\"GNU grep\"* ]] && echo 'ok' || echo 'FAIL' # enforce gnu grep",
+      ],
+      "dns": "etc/dev/dnsmasq.sh",
+    },
+  },
+}

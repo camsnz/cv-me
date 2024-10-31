@@ -1,0 +1,39 @@
+version: "3"
+
+env:
+  PWD: ${PWD}
+  DIR: "cd ${PWD}/ts-markdown-pdf &&"
+  OUTFILE: md-to-pdf.pdf
+  MARKFILE: markdown.md
+tasks:
+  status:
+    cmds:
+    - cmd: "docker ps | grep spawnia/md-to-pdf"
+
+  docker:
+    cmd: "docker run --publish=8000:8000 spawnia/md-to-pdf"
+
+  sass:
+    cmd: "{{.DIR}} sass style.scss bin/style.css"
+
+  markdown:
+    cmd: "{{.DIR}} cp {{.MARKFILE}} bin/tmp-{{.MARKFILE}}"
+  
+  convert:
+    cmds:
+    - |
+      {{.DIR}} curl --output bin/{{.OUTFILE}} \
+      --data-urlencode "markdown=$(cat bin/tmp-{{.MARKFILE}})" \
+      --data-urlencode "css=$(cat bin/style.css)" \
+      http://localhost:8000
+    # --data-urlencode "engine=wkhtmltopdf" \
+
+  open:
+    cmd: "{{.DIR}} open bin/{{.OUTFILE}}"
+
+  run:
+    deps:
+      - sass
+      - markdown
+      - convert
+      # - open
