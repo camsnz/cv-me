@@ -6,21 +6,12 @@ env:
   DIR: "cd ${PWD} &&"
 
   MARKFILE: markdown.md
-  PDF: converted.pdf
-  HTML: converted.html
-
-  PDF_ENGINE: weasyprint
-
-  TITLE: "Cam Scott - Full Stack Engineer"
 tasks:
   docker-build:
     cmds:
       - "{{.DIR}} docker build --tag docker.io/library/pandoc --file src/pandoc.dockerfile ."
 
   pandoc:exec:
-    vars:
-      TYPE: '{{default "html5" .TYPE}}'
-      OUTFILE: '{{default "html_doc.html" .OUTFILE}}'
     cmds:
       - |
         {{.DIR}} docker run \
@@ -53,23 +44,8 @@ tasks:
   markdown:
     cmd: "{{.DIR}} cp src/{{.MARKFILE}} bin/{{.MARKFILE}}"
 
-  # convert:html:
-  #   cmd: "{{.DIR}} pandoc -f markdown -t html5 -o bin/{{.HTML}} bin/{{.MARKFILE}} -c bin/style.css"
-
-  # convert:pdf:
-  #   cmd: "{{.DIR}} pandoc -f markdown -t pdf -o bin/{{.PDF}} bin/{{.MARKFILE}} -c bin/style.css"
-  #   # cmd: "{{.DIR}} pandoc"
-  
   build:
     deps: [sass, markdown, docker-build]
-    
-  # open:pdf:
-  #   cmds:
-  #     - cmd: "{{.DIR}} open bin/{{.OUTNAME}}.pdf"
-
-  open:html:
-    cmds:
-      - cmd: "{{.DIR}} open bin/sample.html"
 
   dev:
     watch: true

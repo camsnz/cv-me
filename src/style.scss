@@ -1,38 +1,31 @@
-@page {
-    size: A4;
-    margin: 0;
-    padding: 0;
-    border: 0;
+$backdropColor: #52575c;
+$backdropColor: #dce5ed;
 
-    margin: 5mm;
-    background: #c5c576;
-    // margin-top: auto;
-    // margin-bottom: auto;
-}
+$paperColor: #c5c576;
+$paperColor: #f5f7fa;
 
-hgroup {
-    margin: 0;
-    padding: 0;
-    border: 0;
-    ul {
-        list-style-type: none;
-        list-style: none;
-        display: inline-flex;
-        justify-content: space-between;
+// #e0e0e0 #f5f7fa
+$devColor1: purple;
+$devColor1: orange;
+$devColor2: yellow;
 
-        li {
-            border: solid thin black;
-            border-radius: 0.3rem;
-            background-color: #f5f7fa;
-            color: purple;
-            padding: 0.3rem;
-            margin: 0.3rem;
-            // width: 90%;
-        }
-    }
-    
-}
+$bodyColor: #45818e;
+$bodyBgColor: #c5c576;
+$bodyBgColor: #c5c576;
+$bodyBgColor: #f5f7fa;
 
+$decorTopLineColor: MidnightBlue;
+$defaultHeadingColor: MidnightBlue;
+$titleHeaderSpanColor: #45818e;
+$roleTechColor: #767d85;
+
+$dividerColor: black;
+$tableBorderColor: DimGray;
+
+$boldWeight: 600;
+
+// #####################################################################
+// ## Baseline Typesetting #############################################
 html {
     margin: 0;
     padding: 0;
@@ -41,17 +34,9 @@ html {
     // height: 100%;
     width: 100vw;
     height: 100vh;
-}
 
-section {
-    display: flex;
-    flex-direction: row-reverse;
+    unicode-bidi: isolate;
 }
-
-div.hidden {
-    display: none;
-}
-
 body {
     // width: 100%;
     height: 100%;
@@ -60,13 +45,11 @@ body {
     padding: 0;
     border: 0;
 
-    border-top: solid 5px MidnightBlue;
-    border-bottom: solid 5px MidnightBlue;
+    border-top: solid 5px $decorTopLineColor;
+    border-bottom: solid 5px $decorTopLineColor;
 
-    background: #f5f7fa;
-    background: #c5c576;
-    /* color: #52575c; */
-    color: #45818e;
+    background: $bodyBgColor;
+    color: $bodyColor;
 
     font-family: 'Source Sans Pro', sans-serif;
     font-weight: 300;
@@ -79,124 +62,179 @@ body {
     vertical-align: baseline; */
     /* -webkit-text-size-adjust: none; */
 }
-strong {
-    font-weight: 600;
-}
+h1, h2, h3, h4, h5, h6 {
+    padding: 0;
+    margin: 0;
+    border: 0;
 
+    display: flex;
+    justify-content: space-between;
+    color: $defaultHeadingColor;
+}
+p,div,span,section {
+    padding: 0;
+    margin: 0;
+    border: 0;
+}
+strong {
+    font-weight: $boldWeight;
+}
 *, *:before, *:after {
     -moz-box-sizing: border-box;
     -webkit-box-sizing: border-box;
     box-sizing: border-box;
 }
 
-user agent stylesheet
+@page {
+    size: A4;
+    margin: 0;
+    padding: 0;
+    border: 0;
 
-div:nth-of-type(even) {
-    border: 2px solid orange;
+    margin: 5mm;
+    background: $paperColor;
+    // margin-top: auto;
+    // margin-bottom: auto;
 }
 
-h1, h2, h3, h4, h5, h6 {
-    display: flex;
-    justify-content: space-between;
-    color: MidnightBlue;
-    span {
-        font-size: 1rem;
-        font-weight: 300;
-        color: #45818e;
-        width: 100%;
+@media screen {
+    // Create an A4-sized container that looks like a page
+    html {
+        display: flex;
+        justify-content: center;
+        background: $backdropColor;
+        margin-top: 2rem;
+    }
+    body {
+        width: 210mm;  // A4 width
+        min-height: 297mm; // A4 height
+        min-height: max-content; // A4 height
+        padding: 20mm;
+        background: $paperColor;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        margin: 0 auto;
     }
 }
 
+// user agent stylesheet
+
+// #####################################################################
+// ## Page Title - Name - Career #######################################
 h1 { // Doc Title, Name, Skill Title
     page-break-after: avoid;
     font-size: 1.7rem;
 
-    padding: 0;
-    margin: 0;
-    border: 0;
-
     margin-top: 0.6rem;
     margin-bottom: 0.6rem;
+
+    width: 100%;
+
+    span {
+        font-size: 1.3rem;
+        font-weight: 400;
+        color: $titleHeaderSpanColor;
+    }
 }
 
+
+// #####################################################################
+// ## Contact Header ###################################################
+hgroup {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    ul {
+        list-style-type: none;
+        list-style: none;
+        padding-left: 0;
+        display: inline-flex;
+        justify-content: space-between;
+
+        li {
+            border: solid thin $tableBorderColor;
+            border-radius: 0.3rem;
+            background-color: $paperColor;
+            color: $devColor1;
+            padding: 0.3rem;
+            margin: 0.3rem;
+            // width: 90%;
+        }
+    }
+    
+}
+
+// #####################################################################
+// ## Section Title (EG: Career and Experience) ########################
 h2 { // Section Title
-    padding: 0;
-    margin: 0;
-    border: 0;
-
     margin-top: 0.6rem;
     margin-bottom: 0.6rem;
 }
 
+// #####################################################################
+// ## Recent Role Title ################################################
 h3 { // Experience Title
-    padding: 0;
-    margin: 0;
-    border: 0;
-
-    margin-top: 0.3rem;
-    margin-bottom: 0.3rem;
+    margin-top: 0.6rem;
     padding-top: 0.3rem;
-    padding-bottom: 0.3rem;
+    padding-bottom: 0.1rem;
 
-    border-top: solid thin black;
-    border-radius: 0.7rem;
+    border-top: solid thin $dividerColor;
+    border-radius: 0.1rem;
+
+    span {
+        font-size: 0.8rem;
+        font-weight: 300;
+        color: $defaultHeadingColor;
+    }
+
 }
-
 code {
     display: flex;
     justify-content: flex-end;
+    font-size: 0.7rem;
+    color: $roleTechColor;
 }
 
-p,div,span,section {
-    padding: 0;
-    margin: 0;
-    border: 0;
-}
 
-// h2::after {
-//     content: ' xyz (' attr(href) ')';
-//     display: block;
-//     border-bottom: 1px solid #45818e;
-//     color: red;
-//     background-color: purple;
-//     margin-top: 0.5em;
-//     margin-bottom: 0.5em;
-// }
-
+// #####################################################################
+// ## Full History Table ###############################################
 div.work-history {
+    table, th, td {
+        border: 1px solid $tableBorderColor;
+    }
     table {
         page-break-inside: avoid;
         border-collapse: collapse;
         width: 100%;
     }
+
+    col {
+        font-size: 0.7rem;
+        width: fit-content;
+    }
+        
+    th, td {
+        text-align: left;
+        padding: 0.2rem;
+    }
+    tr {
+        &:nth-child(1) {
+            width: fit-content;
+            max-width: fit-content;
+        }
+    }
 }
 
-col {
-    font-size: 0.7rem;
-}
 
-table, th, td {
-    border: 1px solid DimGray;
-}
+// #####################################################################
+// ## MISC #############################################################
+// #####################################################################
 
-th, td {
-    text-align: left;
-    padding: 1em;
-}
+// section {
+//     display: flex;
+//     flex-direction: row-reverse;
+// }
 
-/* div {
-    display: block;
-    unicode-bidi: isolate;
-} */
-/* .sk-sample-resume-container {
-    background-color: white;
-    padding: 40px;
-    box-shadow: 0px 0px 10px #ccc;
-    font-family: "Graphik", sans-serif;
-    letter-spacing: -0.2px;
-    width: 100%;
-    border-top: 4px solid #45818e;
-    border-left: 4px solid transparent;
-    margin: 0 auto;
-    margin-bottom: 50px;
-} */
+// div.hidden {
+//     display: none;
+// }
+
