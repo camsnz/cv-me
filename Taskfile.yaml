@@ -19,11 +19,8 @@ tasks:
 
   pandoc:exec:
     vars:
-      TYPE: "html"
-    cmd: echo {{.TYPE}}
-
-  pandoc:html:
-    deps: [build]
+      TYPE: '{{default "html5" .TYPE}}'
+      OUTFILE: '{{default "html_doc.html" .OUTFILE}}'
     cmds:
       - |
         {{.DIR}} docker run \
@@ -34,7 +31,21 @@ tasks:
         --pdf-engine=weasyprint \
         -f markdown -c style.css \
         --metadata 'title={{.TITLE}}' \
-        {{.MARKFILE}} -t html5 -o {{.HTML}} --embed-resources --standalone
+        {{.MARKFILE}} -t {{.TYPE}} -o {{.OUTFILE}} --embed-resources --standalone
+
+  pandoc:pdf:
+    cmds:
+      - task: pandoc:exec
+        vars: 
+          TYPE: pdf
+          OUTFILE: pdf_doc.pdf
+        
+  pandoc:html:
+    cmds:
+      - task: pandoc:exec
+        vars: 
+          TYPE: html5
+          OUTFILE: html_doc.html
 
   sass:
     cmd: "{{.DIR}} sass src/style.scss bin/style.css"
@@ -52,14 +63,23 @@ tasks:
   build:
     deps: [sass, markdown, docker-build]
     
-  open:pdf:
+  # open:pdf:
+  #   cmds:
+  #     - cmd: "{{.DIR}} open bin/{{.OUTNAME}}.pdf"
+
+  open:html:
     cmds:
-      - cmd: "{{.DIR}} open bin/{{.OUTNAME}}.pdf"
+      - cmd: "{{.DIR}} open bin/sample.html"
 
   dev:
     watch: true
     cmds:
-      - task: convert
+      - task: sass
+      - task: markdown
+      - task: pandoc:html
+      - task: pandoc:pdf
+    sources:
+      - src/**
 
   run:
     cmds:
