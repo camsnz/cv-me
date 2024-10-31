@@ -29,11 +29,12 @@ tasks:
     # --data-urlencode "engine=wkhtmltopdf" \
 
   open:
-    cmd: "{{.DIR}} open bin/{{.OUTFILE}}"
+    cmds:
+    - cmd: "{{.DIR}} open bin/{{.OUTFILE}}"
 
   run:
-    deps:
-      - sass
-      - markdown
-      - convert
-      # - open
+    cmds:
+      - task: sass
+      - task: markdown
+      - task: convert
+      - task: open
