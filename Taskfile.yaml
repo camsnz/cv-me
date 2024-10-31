@@ -5,6 +5,9 @@ env:
   DIR: "cd ${PWD}/ts-markdown-pdf &&"
   OUTFILE: md-to-pdf.pdf
   MARKFILE: markdown.md
+  # PDF_ENGINE: wkhtmltopdf
+  PDF_ENGINE: weasyprint
+  # PDF_ENGINE: pdflatex
 tasks:
   status:
     cmds:
@@ -25,8 +28,8 @@ tasks:
       {{.DIR}} curl --output bin/{{.OUTFILE}} \
       --data-urlencode "markdown=$(cat bin/tmp-{{.MARKFILE}})" \
       --data-urlencode "css=$(cat bin/style.css)" \
+      --data-urlencode "engine={{.PDF_ENGINE}}" \
       http://localhost:8000
-    # --data-urlencode "engine=wkhtmltopdf" \
 
   open:
     cmds:
