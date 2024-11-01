@@ -1,40 +1,71 @@
 $backdropColor: #52575c;
 $backdropColor: #dce5ed;
 
-$paperColor: #c5c576;
+$color1: MidnightBlue;
+$color2: #056277;
+$color3: #767d85;
+
 $paperColor: #f5f7fa;
+
+$bodyBgColor: $paperColor;
+$bodyTextColor: $color2;
+
+
+$decorTopLineColor: $color1;
+$defaultHeadingColor: $color1;
+$titleHeaderSpanColor: $color2;
+$roleTechColor: $color3;
+
+$contactInfoTextColor: $color3;
+$contactInfoSeparator: $color1;
+
+$dividerColor: $color3;
+
+$linkColor: $color3;
+$linkVisitedColor: $color2;
 
 // #e0e0e0 #f5f7fa
 $devColor1: purple;
-$devColor1: orange;
-$devColor2: yellow;
-
-$bodyColor: #45818e;
-$bodyBgColor: #c5c576;
-$bodyBgColor: #c5c576;
-$bodyBgColor: #f5f7fa;
-
-$decorTopLineColor: MidnightBlue;
-$defaultHeadingColor: MidnightBlue;
-$titleHeaderSpanColor: #45818e;
-$roleTechColor: #767d85;
-
-$dividerColor: black;
-$tableBorderColor: DimGray;
+$devColor2: orange;
+$devColor3: yellow;
+$tableBorderColor: $devColor1;
 
 $boldWeight: 600;
 
+
 // #####################################################################
 // ## Baseline Typesetting #############################################
+@mixin font_style_for_content {
+    font-family: 'Source Sans Pro', sans-serif;
+    color: $color2;
+    font-weight: 300;
+    line-height: 1.1em;
+    font-size: 11pt;
+}
+@mixin font_style_for_heading {
+    font-family: 'Source Sans Pro', sans-serif;
+    font-weight: 500;
+    line-height: 1em;
+    color: $color1;
+}
+@mixin font_style_for_code {
+    font-family: monospace;
+    font-size: 0.7rem;
+    color: $color3;
+}
+@mixin font_style_for_sub_heading {
+    font-family: monospace;
+    color: $color3;
+    font-style: normal;
+    font-weight: 300;
+    font-size: 0.7rem;
+    padding-top: 0.2rem;
+}
+
 html {
     margin: 0;
     padding: 0;
     border: 0;
-    // width: 100%;
-    // height: 100%;
-    width: 100vw;
-    height: 100vh;
-
     unicode-bidi: isolate;
 }
 body {
@@ -49,18 +80,9 @@ body {
     border-bottom: solid 5px $decorTopLineColor;
 
     background: $bodyBgColor;
-    color: $bodyColor;
+    color: $bodyTextColor;
 
-    font-family: 'Source Sans Pro', sans-serif;
-    font-weight: 300;
-    line-height: 1.1em;
-    font-size: 11pt;
-    /* font-size: 22px; */
-
-    /* font-size: 100%;
-    font: inherit;
-    vertical-align: baseline; */
-    /* -webkit-text-size-adjust: none; */
+    @include font_style_for_content();
 }
 h1, h2, h3, h4, h5, h6 {
     padding: 0;
@@ -84,6 +106,42 @@ strong {
     -webkit-box-sizing: border-box;
     box-sizing: border-box;
 }
+
+@mixin ul_bullet_style_of_fire {
+    // emoji code not translating in pdf ;( maybe font-lib fixable
+    list-style-type: "\1F525";
+    li {
+        mix-blend-mode: luminosity;
+        &::marker {
+            font-size: 0.5rem;
+        }
+    }
+}
+@mixin ul_bullet_style_of_D {
+    list-style-type: "\00204d";
+    list-style-position: outside;
+    // list-style-type: "⤮";
+    padding-left: 0.5rem;
+    li {
+        padding-left: 0.5rem;
+        &::marker {
+            font-size: 0.81rem;
+            // padding-right: 1.5rem;
+            // margin-right: 1.5rem;
+        }
+        &::before {
+            content: '\2009';
+        }
+    }
+}
+
+ul {
+    margin-bottom: 0.4rem;
+    line-height: 1.25rem;
+
+    @include ul_bullet_style_of_D();
+}
+
 
 @page {
     size: A4;
@@ -123,6 +181,7 @@ strong {
 h1 { // Doc Title, Name, Skill Title
     page-break-after: avoid;
     font-size: 1.7rem;
+    @include font_style_for_heading();
 
     margin-top: 0.6rem;
     margin-bottom: 0.6rem;
@@ -130,37 +189,88 @@ h1 { // Doc Title, Name, Skill Title
     width: 100%;
 
     span {
-        font-size: 1.3rem;
-        font-weight: 400;
-        color: $titleHeaderSpanColor;
+        @include font_style_for_heading();
+        // font-size: 1.3rem;
+        // font-weight: 400;
+        // color: $titleHeaderSpanColor;
     }
 }
 
 
 // #####################################################################
 // ## Contact Header ###################################################
+@mixin hgroup_contact_info_decorators {
+    ul {
+        &:before {
+            content: '[';
+        }
+        &:after {
+            content: ']';
+        }
+        li:first-child {
+            border-left: none;
+        }
+        li:last-child {
+            border-right: none;
+        }
+    }
+}
+
+@mixin hgroup_contact_info_fonts {
+    ul {
+        li {
+            font-size: 0.8rem;
+            font-weight: 300;
+        }
+        font-size: 1.3rem;
+        font-weight: 400;
+
+        li {
+            font-family: monospace;
+            color: $contactInfoTextColor;
+            a {
+                color: $linkColor;
+            }
+        }
+    }
+}
+
 hgroup {
     margin: 0;
     padding: 0;
     border: 0;
+
+    margin-bottom: 2rem;
+
     ul {
         list-style-type: none;
         list-style: none;
         padding-left: 0;
-        display: inline-flex;
-        justify-content: space-between;
 
+        margin: 0.2rem;
+
+        display: inline-flex;
+        flex-wrap: nowrap;
+        width: 100%;
+        
         li {
-            border: solid thin $tableBorderColor;
-            border-radius: 0.3rem;
-            background-color: $paperColor;
-            color: $devColor1;
-            padding: 0.3rem;
-            margin: 0.3rem;
-            // width: 90%;
+            border: none;
+            
+            border-left: solid thin $contactInfoSeparator;
+            border-right: solid thin $contactInfoSeparator;
+
+            border-radius: 0;
+            margin: 0;
+            padding: 0;
+
+            flex: content;
+            text-align: center;
+            padding: 0.1rem;
+
         }
     }
-    
+    @include hgroup_contact_info_decorators();
+    @include hgroup_contact_info_fonts();
 }
 
 // #####################################################################
@@ -173,18 +283,27 @@ h2 { // Section Title
 // #####################################################################
 // ## Recent Role Title ################################################
 h3 { // Experience Title
-    margin-top: 0.6rem;
-    padding-top: 0.3rem;
+    margin-top: 0.9rem;
+    padding-top: 0.5rem;
     padding-bottom: 0.1rem;
 
     border-top: solid thin $dividerColor;
     border-radius: 0.1rem;
+
+    @include font_style_for_heading();
+
+    em {
+        position: absolute;
+        margin-top: 1rem;
+        @include font_style_for_sub_heading();
+    }
 
     span {
         font-size: 0.8rem;
         font-weight: 300;
         color: $defaultHeadingColor;
     }
+    
 
 }
 code {
@@ -192,36 +311,57 @@ code {
     justify-content: flex-end;
     font-size: 0.7rem;
     color: $roleTechColor;
+    @include font_style_for_code();
 }
 
 
 // #####################################################################
 // ## Full History Table ###############################################
 div.work-history {
-    table, th, td {
-        border: 1px solid $tableBorderColor;
+    // page-break-inside: avoid;
+    h2 {
+        page-break-before: auto;
+        // page-break-after: avoid;
     }
     table {
-        page-break-inside: avoid;
+        page-break-before: avoid;
+        page-break-inside: auto;
         border-collapse: collapse;
         width: 100%;
     }
-
-    col {
-        font-size: 0.7rem;
-        width: fit-content;
-    }
-        
-    th, td {
-        text-align: left;
-        padding: 0.2rem;
-    }
-    tr {
-        &:nth-child(1) {
-            width: fit-content;
+    thead,tbody tr {
+        th {
+            display: none;
+        }
+        th:first-child, td:first-child {
+            vertical-align: top;
+            // max-width: 5rem;
             max-width: fit-content;
+            font-family: monospace;
+            font-size: 0.8em;
+            font-weight: 100;            
+        }
+        th:last-child, td:last-child {
+            vertical-align: top;
+            max-width: 100%;
+            // font-family: monospace;
+            // font-size: 0.8em;
+            // font-weight: 100;
         }
     }
+    table, th, td {
+        border: 1px solid $tableBorderColor;
+    }
+
+    // col {
+    //     font-size: 0.7rem;
+    //     // width: fit-content;
+    // }
+        
+    // th, td {
+    //     text-align: left;
+    //     padding: 0.2rem;
+    // }
 }
 
 
