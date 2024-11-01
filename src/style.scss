@@ -217,6 +217,9 @@ h1 { // Doc Title, Name, Skill Title
         li:last-child {
             border-right: none;
         }
+        li:before {
+            display: none;
+        }
     }
 }
 
