@@ -98,6 +98,10 @@ p,div,span,section {
     margin: 0;
     border: 0;
 }
+code {
+    @include font_style_for_code();
+}
+
 strong {
     font-weight: $boldWeight;
 }
@@ -303,15 +307,11 @@ h3 { // Experience Title
         font-weight: 300;
         color: $defaultHeadingColor;
     }
-    
-
 }
-code {
+
+p > code {
     display: flex;
     justify-content: flex-end;
-    font-size: 0.7rem;
-    color: $roleTechColor;
-    @include font_style_for_code();
 }
 
 
@@ -362,6 +362,80 @@ div.work-history {
     //     text-align: left;
     //     padding: 0.2rem;
     // }
+}
+
+div.projects {
+    padding-top: 0.2rem;
+    // p {
+    //     width: 50%;
+    //     display: inline-flex;
+    //     border: solid thin red;
+    //     font-weight: 700;
+    //     height: 10rem;
+    // }
+    ul {
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+        border: 0;
+    }
+
+    &> ul {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-around;
+
+        &> li {
+            cursor: pointer;
+            text-align: left;
+            margin: 0.2rem;
+            // top: 0;
+            border-collapse: collapse;
+            border: solid 2px $color3;
+            border-radius: 0.4rem;
+            display: block;
+            width: 47%;
+            &> ul {
+
+            }
+        }
+    }
+
+
+    table {
+        border-collapse: collapse;
+        width: 100%;
+    }
+    thead,tbody tr {
+        
+        td {
+            border: solid thick black;
+            width: 50%;
+            height: 5rem;
+            text-align: center;
+        }
+        th {
+            display: none;
+        }
+        th:first-child, td:first-child {
+            vertical-align: top;
+            // max-width: 5rem;
+            max-width: fit-content;
+            font-family: monospace;
+            font-size: 0.8em;
+            font-weight: 100;            
+        }
+        th:last-child, td:last-child {
+            vertical-align: top;
+            max-width: 100%;
+            // font-family: monospace;
+            // font-size: 0.8em;
+            // font-weight: 100;
+        }
+    }
+    table, th, td {
+        border: 1px solid $tableBorderColor;
+    }
 }
 
 
