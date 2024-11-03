@@ -1,18 +1,33 @@
-import { Contact, DateTimeValue, EducationItem, JobRole, JobRoleId, Person, References, ResumeData, TimeSpan } from "./types"
+import { Contact, DateTimeValue, EducationItem, JobRole, JobRoleId, Person, References, ResumeData, TimeSpan } from "./types.ts"
+import {parse, format} from "date-fns"
 
-export const FmtMarkDown = (data:ResumeData) => {
+export const FmtToMarkDown = (data:ResumeData) => `
 
-  return TitleHeader(data.person) + ""
+\`\`\`
+${JSON.stringify(data)}
+\`\`\`
 
-}
+
+${TitleHeader(data.person)}
+
+${FocusedRoles(data.roles, data.focusedRoles)}
+
+${FullCareerHistory(data.roles, data.focusedRoles)}
+
+${academicSection(data.education)}
+
+${references(data.references)}
+
+`
 
 const TitleHeader = (person:Person) => `
 # ${person.name} <span>${person.careerTitle}</span>
 
 <hgroup>
 
-${person.contacts.map(c => `* ${fmtContact(c)}`)}
-  
+${person.contacts.map(c => `* ${fmtContact(c)}
+`).join("")}
+
 </hgroup>
 `
 
@@ -36,27 +51,45 @@ const fmtContact = (contact:Contact) => {
 }
 
 const fmtEmployer = (role:JobRole) => {
-  if(role.employers)
-    return `*${role.employers[0]}*`
-  if(role.companies)
-    return `*${role.companies[0]}*`
+  if(role.employers?.length > 0)
+    return `*${role.employers[0]?.name}*`
+  if(role.companies?.length > 0)
+    return `*${role.companies[0]?.name}*`
   return "";
 }
-const asDate = (val:DateTimeValue) => new Date()
-const fmtShortDate = (span:TimeSpan) => {
-  return "start - end"
+const asDate = (val:DateTimeValue):Date => {
+  if(!val) {
+    return new Date(0);
+  }
+  if(val instanceof Date) {
+    return val as Date;
+  }
+  if(typeof val != "string") {
+    return new Date(0);
+  }
+
+  if(val.trim() == "" || val.toLowerCase() == "present") {
+    return new Date();
+  }
+  return parse(val, "yyyy-MM-dd", new Date())
 }
 
+const fmtShortDate = (span:TimeSpan) => {
+  const start = asDate(span.start)
+  const end = asDate(span.end)
+  return `${format(start, "MMM'yy")} - ${format(end, "MMM'yy")}`
+}
 
-const Roles = (roles:JobRole[]) => roles.map(r => `
+const FocusedRoles = (roles:JobRole[], focusedRoles:JobRoleId[]) => roles.filter(r => focusedRoles.includes(r.id)).map(r => `
 
 ### ${r.roleTitle} ${fmtEmployer(r)} <span>${[r.roleLocations.join(", "),fmtShortDate(r.timespan)].join(" | ")}</span>
 
 \`${r.technologies.join(" | ")}\`
 
-${r.achievements.map(ach => "* " + ach)}
+${r.achievements.map(ach => `* ${ach}
+`).join("")}
 
-`).join("\n")
+`).join("")
 
 const FullCareerHistory = (allRoles:JobRole[], focusedRoles:JobRoleId[]) => {
 const pre = `
@@ -83,7 +116,7 @@ const academicSection = (education:EducationItem[]) => `
 
 ${education.map(e => `
 ${e.institution} ${e.qualification} ${e.title} ${fmtShortDate(e.timespan)}
-`)}
+`).join("")}
 
 `
 
@@ -97,7 +130,8 @@ ${references.reference.map(ref => `
 
   #### ${ref.person.name}
 
-  ${ref.person.careerTitle} - ${fmtEmployer(ref.role)}
+  ${ref.person.careerTitle}
 
-`)}
+`).join("")}
 `
+// - ${fmtEmployer(ref.role)}

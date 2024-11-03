@@ -81,9 +81,11 @@ export type EducationItem = {
     timespan: TimeSpan;
 };
 
+
+
 export type References = {
     showDetail: boolean,
-    reference: [
-        { person: Person, role: JobRole },
-    ],
+    reference: { person: Person, }[]
+        // , //role: JobRole },
+    // ],
 }

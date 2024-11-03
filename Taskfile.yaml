@@ -38,6 +38,24 @@ tasks:
           TYPE: html5
           OUTFILE: html_doc.html
 
+  transform:ts-to-json:
+    cmds:
+      - cmd: "npx tsx src/typescript/ts-to-json.ts"
+  transform:json-to-markdown:
+    cmds:
+      - cmd: "npx tsx src/typescript/ts-to-json.ts"
+  # transform:markdown-to-pdf:
+  # transform:markdown-to-html:
+
+  run:
+    cmds:
+      - task: docker-build
+      - task: sass
+      - task: transform:ts-to-json
+      - task: transform:json-to-markdown
+      # - task: transform:markdown-to-html
+      # - task: transform:markdown-to-pdf
+
   sass:
     cmd: "{{.DIR}} sass src/style.scss bin/style.css"
 
@@ -50,13 +68,15 @@ tasks:
   dev:
     watch: true
     cmds:
-      - task: sass
-      - task: markdown
-      - task: pandoc:html
-      - task: pandoc:pdf
+      - cmd: deno task to-json
+      - cmd: deno task to-markdown
+      # - task: sass
+      # - task: markdown
+      # - task: pandoc:html
+      # - task: pandoc:pdf
     sources:
-      - src/**
+      - src/**/*
 
-  run:
-    cmds:
-      - task: pandoc:html
+  # run:
+  #   cmds:
+  #     - task: pandoc:html

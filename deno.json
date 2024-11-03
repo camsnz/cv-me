@@ -1,0 +1,12 @@
+{
+  "tasks": {
+    "dev": "deno task --watch transform",
+    "to-json": "deno run --allow-write=bin/json-content.json src/typescript/to-json.ts",
+    "to-markdown": "deno run --allow-write=bin/markdown-content.md src/typescript/to-markdown.ts"
+  },
+  
+  "imports": {
+    "@std/assert": "jsr:@std/assert@1",
+    "date-fns": "npm:date-fns@^4.1.0"
+  }
+}
