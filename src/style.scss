@@ -19,7 +19,7 @@ $roleTechColor: $color3;
 $contactInfoTextColor: $color3;
 $contactInfoSeparator: $color1;
 
-$dividerColor: $color3;
+$dividerColor: lighten($color3, 35%);
 
 $linkColor: $color3;
 $linkVisitedColor: $color2;
@@ -28,7 +28,7 @@ $linkVisitedColor: $color2;
 $devColor1: purple;
 $devColor2: orange;
 $devColor3: yellow;
-$tableBorderColor: $devColor1;
+$tableLineDividerColor: lighten($color3, 45%);
 
 $boldWeight: 600;
 
@@ -247,7 +247,7 @@ hgroup {
     padding: 0;
     border: 0;
 
-    margin-bottom: 2rem;
+    margin-bottom: 1rem;
 
     ul {
         list-style-type: none;
@@ -320,6 +320,8 @@ p > code {
 
 // #####################################################################
 // ## Full History Table ###############################################
+$cellWidth: 7.5rem;
+$cellPad: 0.4rem;
 div.work-history {
     // page-break-inside: avoid;
     h2 {
@@ -327,44 +329,47 @@ div.work-history {
         // page-break-after: avoid;
     }
     table {
+        border-top: 1px solid $tableLineDividerColor;
+        border-bottom: none;
+        border-radius: 0.8rem;
+        // &:last-of-type {
+        //     border-bottom: 1px solid $tableBorderColor;
+        // }
+
         page-break-before: avoid;
         page-break-inside: auto;
         border-collapse: collapse;
         width: 100%;
     }
+    thead {
+        display:none;
+    }
     thead,tbody tr {
-        th {
-            display: none;
+        td {
+            // padding-left: $cellPad;
+            // padding-right: $cellPad;
+            padding: 0;
+            font-size: 0.8rem;
         }
-        th:first-child, td:first-child {
+        td:first-child,td:last-child {
+            // max-width: $cellWidth;
+            width: $cellWidth;
+            // min-width: $cellWidth;
+
+            padding: $cellPad;
+
             vertical-align: top;
-            // max-width: 5rem;
-            max-width: fit-content;
             font-family: monospace;
             font-size: 0.8em;
-            font-weight: 100;            
+            font-weight: 100;
+            
+            color: $color3;
         }
-        th:last-child, td:last-child {
-            vertical-align: top;
-            max-width: 100%;
-            // font-family: monospace;
-            // font-size: 0.8em;
-            // font-weight: 100;
+        td:last-child {
+            width: $cellWidth * 2;
+            text-align: right;
         }
     }
-    table, th, td {
-        border: 1px solid $tableBorderColor;
-    }
-
-    // col {
-    //     font-size: 0.7rem;
-    //     // width: fit-content;
-    // }
-        
-    // th, td {
-    //     text-align: left;
-    //     padding: 0.2rem;
-    // }
 }
 
 div.projects {
@@ -437,10 +442,35 @@ div.projects {
         }
     }
     table, th, td {
-        border: 1px solid $tableBorderColor;
+        border: 1px solid $tableLineDividerColor;
     }
 }
 
+
+// #####################################################################
+// ## MISC #############################################################
+h4 { // Experience Title
+    margin-top: 0.9rem;
+    padding-top: 0.5rem;
+    padding-bottom: 0.1rem;
+
+    // border-top: solid thin $dividerColor;
+    border-radius: 0.1rem;
+
+    @include font_style_for_heading();
+
+    em {
+        position: absolute;
+        margin-top: 1rem;
+        @include font_style_for_sub_heading();
+    }
+
+    span {
+        font-size: 0.8rem;
+        font-weight: 300;
+        color: $defaultHeadingColor;
+    }
+}
 
 // #####################################################################
 // ## MISC #############################################################

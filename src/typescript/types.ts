@@ -77,8 +77,9 @@ export type EducationItem = {
         website?: string;
     };
     qualification: string;
-    title: string;
+    title?: string;
     timespan: TimeSpan;
+    achievements?: string[]
 };
 
 

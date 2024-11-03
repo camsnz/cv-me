@@ -13,6 +13,7 @@ export const typedData:ResumeData = {
             {kind: ContactKind.website, value: "https://microsoft.com"},
         ],
     },
+    
     education: [
         {
             title: "Drop Out",
@@ -24,6 +25,10 @@ export const typedData:ResumeData = {
                 start: "1979-01-01",
                 end: "1980-01-01",
             },
+            achievements: [
+                "micro-brewery",
+                "strut"
+            ]
         }
     ],
     focusedRoles: ["2"],

@@ -5,7 +5,7 @@ interval: 500ms
 env:
   DIR: "cd ${PWD} &&"
 
-  MARKFILE: markdown.md
+  MARKFILE: markdown-content.md
 tasks:
   docker-build:
     cmds:
@@ -59,9 +59,6 @@ tasks:
   sass:
     cmd: "{{.DIR}} sass src/style.scss bin/style.css"
 
-  markdown:
-    cmd: "{{.DIR}} cp src/{{.MARKFILE}} bin/{{.MARKFILE}}"
-
   build:
     deps: [sass, markdown, docker-build]
 
@@ -70,12 +67,12 @@ tasks:
     cmds:
       - cmd: deno task to-json
       - cmd: deno task to-markdown
-      # - task: sass
-      # - task: markdown
-      # - task: pandoc:html
+      - task: sass
+      - task: pandoc:html
       # - task: pandoc:pdf
     sources:
-      - src/**/*
+      - "src/**/*"
+      - "inputs/**/*"
 
   # run:
   #   cmds:
