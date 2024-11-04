@@ -346,15 +346,14 @@ div.work-history {
     }
     thead,tbody tr {
         td {
-            // padding-left: $cellPad;
-            // padding-right: $cellPad;
             padding: 0;
             font-size: 0.8rem;
+            text-align: left;
         }
         td:first-child,td:last-child {
-            // max-width: $cellWidth;
+            max-width: $cellWidth;
             width: $cellWidth;
-            // min-width: $cellWidth;
+            min-width: $cellWidth;
 
             padding: $cellPad;
 
@@ -366,7 +365,9 @@ div.work-history {
             color: $color3;
         }
         td:last-child {
-            width: $cellWidth * 2;
+            max-width: $cellWidth * 1.5;
+            width: $cellWidth * 1.5;
+            min-width: $cellWidth * 1.5;
             text-align: right;
         }
     }

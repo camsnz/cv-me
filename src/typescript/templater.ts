@@ -75,17 +75,33 @@ const fmtShortDate = (date:Date):string => {
   if(unoDate > date) {
     return "Now"
   }
-  return format(date, "LLL yy").split(" ").join("'")
+  let formatted;
+  try {
+    formatted = format(date, "LLL yy").split(" ").join("'")
+  } catch(e) {
+    console.log({date})
+    console.error(e);
+    throw e;
+  }
+  return formatted;
 }
 
 const fmtTimeSpanToShortDate = (span:TimeSpan):string => {
   const start = asDate(span.start)
   const end = asDate(span.end)
+  console.log({span, start, end})
+  if(([start,end] as unknown as string[]).includes("Invalid Date")) {
+    console.error({span, start, end})
+  }
   return `${fmtShortDate(start)} - ${fmtShortDate(end)}`
 }
 
+const sortReverseChron = (a:JobRole,b:JobRole) => asDate(b.timespan.start).getTime() - asDate(a.timespan.start).getTime()
+
 const FocusedRoles = (roles:JobRole[], focusedRoles:JobRoleId[]) => {
-  const content = roles.filter(r => focusedRoles.includes(r.id)).map(r => `
+  const focusedOnly = (r:JobRole) => focusedRoles.includes(r.id)
+
+  const content = roles.sort(sortReverseChron).filter(focusedOnly).map(r => `
 ### ${r.roleTitle} ${fmtEmployer(r)} <span>${[r.roleLocations.join(", "),fmtTimeSpanToShortDate(r.timespan)].join(" | ")}</span>
 
 \`${r.technologies.join(" | ")}\`
@@ -94,22 +110,21 @@ ${r.achievements.map(ach => `* ${ach}
 `).join("")}`).join("");
 
   return `## Summary
+
 ${content}`;
 }
 
-
 const FullCareerHistory = (allRoles:JobRole[], focusedRoles:JobRoleId[]) => {
-const pre = `
-## Full Career History
-<div class="work-history">
-`
-const tableHead = `
+
+const filter = () => true
+// const filter = (r:JobRole) => !focusedRoles.includes(r.id)
+const roles = allRoles.filter(filter).sort(sortReverseChron)
+
+  const tableHead = `
 | When | Where | What           |
 |--------|---------|----------------- |
 `
-const roles = allRoles.filter(r => !focusedRoles.includes(r.id)).sort((a,b) => asDate(a.timespan.start).getTime() - asDate(b.timespan.start).getTime())
-
-const tableRows = roles.map(r => `| ${fmtTimeSpanToShortDate(r.timespan)} | ${r.roleTitle} @ ${fmtEmployer(r)} | ${r.technologies.join(" \\| ")} |`)
+const tableRows = roles.map(r => `| ${fmtTimeSpanToShortDate(r.timespan)} | ${r.roleTitle} <br>@ ${fmtEmployer(r)} | ${r.technologies.join(", ")} |`)
 
 return `
 ## Full Career History

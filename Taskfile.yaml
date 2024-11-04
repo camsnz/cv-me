@@ -69,7 +69,7 @@ tasks:
       - cmd: deno task to-markdown
       - task: sass
       - task: pandoc:html
-      # - task: pandoc:pdf
+      - task: pandoc:pdf
     sources:
       - "src/**/*"
       - "inputs/**/*"
