@@ -89,7 +89,6 @@ const fmtShortDate = (date:Date):string => {
 const fmtTimeSpanToShortDate = (span:TimeSpan):string => {
   const start = asDate(span.start)
   const end = asDate(span.end)
-  console.log({span, start, end})
   if(([start,end] as unknown as string[]).includes("Invalid Date")) {
     console.error({span, start, end})
   }
@@ -122,16 +121,19 @@ const roles = allRoles.filter(filter).sort(sortReverseChron)
 
   const tableHead = `
 | When | Where | What           |
-|--------|---------|----------------- |
-`
-const tableRows = roles.map(r => `| ${fmtTimeSpanToShortDate(r.timespan)} | ${r.roleTitle} <br>@ ${fmtEmployer(r)} | ${r.technologies.join(", ")} |`)
+|------|---------|---------------- |`
+const rowHead = ``
+
+const tableRows = roles.map(r => 
+  `| ${fmtTimeSpanToShortDate(r.timespan)} | ${r.roleTitle} <br>@ ${fmtEmployer(r)} | ${r.technologies.join(", ")} |
+`)
 
 return `
 ## Full Career History
 <div class="work-history">
 
-${tableRows.map(r => `${tableHead}${r}
-`).join("")}
+${tableHead}
+${tableRows.map(r => `${rowHead}${r}`).join("")}
 
 </div>
 `

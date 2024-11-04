@@ -93,6 +93,11 @@ h1, h2, h3, h4, h5, h6 {
     justify-content: space-between;
     color: $defaultHeadingColor;
 }
+h2 {
+    margin-top: 1.5rem;
+    margin-bottom: 0.6rem;
+}
+
 p,div,span,section {
     padding: 0;
     margin: 0;
@@ -157,6 +162,9 @@ ul {
     background: $paperColor;
     // margin-top: auto;
     // margin-bottom: auto;
+}
+body {
+    padding-bottom: 2rem;
 }
 
 @media screen {
@@ -282,10 +290,10 @@ hgroup {
 
 // #####################################################################
 // ## Section Title (EG: Career and Experience) ########################
-h2 { // Section Title
-    margin-top: 0.6rem;
-    margin-bottom: 0.6rem;
-}
+// h2 { // Section Title
+//     margin-top: 0.6rem;
+//     margin-bottom: 0.6rem;
+// }
 
 // #####################################################################
 // ## Recent Role Title ################################################
@@ -320,26 +328,35 @@ p > code {
 
 // #####################################################################
 // ## Full History Table ###############################################
-$cellWidth: 7.5rem;
+$cellWidth: 1.5rem;
 $cellPad: 0.4rem;
 div.work-history {
     // page-break-inside: avoid;
     h2 {
-        page-break-before: auto;
-        // page-break-after: avoid;
+        page-break-before: avoid;
+        page-break-after: avoid;
     }
     table {
-        border-top: 1px solid $tableLineDividerColor;
-        border-bottom: none;
-        border-radius: 0.8rem;
-        // &:last-of-type {
-        //     border-bottom: 1px solid $tableBorderColor;
-        // }
-
         page-break-before: avoid;
         page-break-inside: auto;
+
         border-collapse: collapse;
         width: 100%;
+    }
+    table > colgroup {
+        // &> col {
+        //     width: 30% !important;
+        // }
+        // &> col:first {
+        //     width: 20% !important;
+        // }
+        // &> col:last {
+        //     width: 30% !important;
+        // }
+    }
+    tr {
+        border-top: 1px solid $tableLineDividerColor;
+        border-bottom: none;
     }
     thead {
         display:none;
@@ -354,6 +371,7 @@ div.work-history {
             max-width: $cellWidth;
             width: $cellWidth;
             min-width: $cellWidth;
+            width: fit-content;
 
             padding: $cellPad;
 
