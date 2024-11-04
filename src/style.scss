@@ -23,6 +23,8 @@ $dividerColor: lighten($color3, 35%);
 
 $linkColor: $color3;
 $linkVisitedColor: $color2;
+$linkColor: darken($color3, 15%);
+$linkVisitedColor: lighten($color2, 15%);
 
 // #e0e0e0 #f5f7fa
 $devColor1: purple;
@@ -105,6 +107,14 @@ p,div,span,section {
 }
 code {
     @include font_style_for_code();
+}
+a {
+    color: $linkColor;
+    // &:visited: $linkVisitedColor;
+    &:visited {
+        color: $linkVisitedColor;
+    }
+    
 }
 
 strong {
@@ -243,9 +253,6 @@ h1 { // Doc Title, Name, Skill Title
         li {
             font-family: monospace;
             color: $contactInfoTextColor;
-            a {
-                color: $linkColor;
-            }
         }
     }
 }
@@ -319,10 +326,19 @@ h3 { // Experience Title
         color: $defaultHeadingColor;
     }
 }
-
-p > code {
+p {
+    margin-bottom: 0.7rem;
+}
+h3 + p > code {
+    &::before {
+        content: " ";
+        min-width: 30%;
+    }
     display: flex;
     justify-content: flex-end;
+    margin-bottom: 0.9rem;
+    text-align: right;
+    overflow-wrap: normal;
 }
 
 
@@ -331,7 +347,6 @@ p > code {
 $cellWidth: 1.5rem;
 $cellPad: 0.4rem;
 div.work-history {
-    // page-break-inside: avoid;
     h2 {
         page-break-before: avoid;
         page-break-after: avoid;
@@ -343,18 +358,8 @@ div.work-history {
         border-collapse: collapse;
         width: 100%;
     }
-    table > colgroup {
-        // &> col {
-        //     width: 30% !important;
-        // }
-        // &> col:first {
-        //     width: 20% !important;
-        // }
-        // &> col:last {
-        //     width: 30% !important;
-        // }
-    }
     tr {
+        page-break-inside: avoid;
         border-top: 1px solid $tableLineDividerColor;
         border-bottom: none;
     }
@@ -422,9 +427,6 @@ div.projects {
             border-radius: 0.4rem;
             display: block;
             width: 47%;
-            &> ul {
-
-            }
         }
     }
 

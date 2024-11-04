@@ -10,7 +10,12 @@ export type ResumeData = {
 export type Person = {
     name: string,
     careerTitle: string,
+    careerBlurb?: string[],
     contacts: Contact[],
+}
+
+export type WorkReference = Person & {
+    companyName: string,
 }
 
 export enum ContactKind {
@@ -49,6 +54,7 @@ export type Entity = {
 
 export type JobRole = {
     id: JobRoleId,
+    blurb?: string[],
     roleTitle: string,
     roleLocations: string[],
     employers: Entity[],
@@ -86,7 +92,7 @@ export type EducationItem = {
 
 export type References = {
     showDetail: boolean,
-    reference: { person: Person, }[]
+    references: WorkReference[]
         // , //role: JobRole },
     // ],
 }
