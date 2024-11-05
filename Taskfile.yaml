@@ -5,9 +5,10 @@ interval: 500ms
 env:
   DIR: "cd ${PWD} &&"
 
-  MARKFILE: markdown-content.md
+  MARKFILE: markdown_doc.md
 tasks:
-  docker-build:
+  ## Pandoc | Docker ##########################################################
+  pandoc:docker-build:
     cmds:
       - "{{.DIR}} docker build --tag docker.io/library/pandoc --file src/pandoc.dockerfile ."
 
@@ -38,29 +39,31 @@ tasks:
           TYPE: html5
           OUTFILE: html_doc.html
 
-  transform:ts-to-json:
+  pandoc:all:
     cmds:
-      - cmd: "npx tsx src/typescript/ts-to-json.ts"
-  transform:json-to-markdown:
-    cmds:
-      - cmd: "npx tsx src/typescript/ts-to-json.ts"
-  # transform:markdown-to-pdf:
-  # transform:markdown-to-html:
+    - task: pandoc:docker-build
+    - task: pandoc:html
+    - task: pandoc:pdf
 
-  run:
+  ## SASS | TS -> JSON -> Markdown ############################################
+  fmt:ts-to-json:
     cmds:
-      - task: docker-build
-      - task: sass
-      - task: transform:ts-to-json
-      - task: transform:json-to-markdown
-      # - task: transform:markdown-to-html
-      # - task: transform:markdown-to-pdf
+      - cmd: "{{.DIR}} deno task to-json"
+  fmt:json-to-markdown:
+    cmds:
+      - cmd: "{{.DIR}} deno task to-markdown"
 
   sass:
     cmd: "{{.DIR}} sass src/style.scss bin/style.css"
 
-  build:
-    deps: [sass, markdown, docker-build]
+  run-all:
+    cmds:
+      - task: fmt:ts-to-json
+      - task: fmt:json-to-markdown
+      - task: sass
+      - task: pandoc:docker-build
+      - task: pandoc:html
+      - task: pandoc:pdf
 
   dev:
     watch: true
@@ -74,6 +77,23 @@ tasks:
       - "src/**/*"
       - "inputs/**/*"
 
+  ## Tests ####################################################################
+
+  test:most-recent-output-filenames:
+    cmds:
+    - cmd: "{{.DIR}} ls -aS1 bin | head -n 2 | grep pdf | { read NAME; test $NAME = 'pdf_doc.pdf'; }"
+    - cmd: "{{.DIR}} ls -aS1 bin | head -n 2 | grep html | { read NAME; test $NAME = 'html_doc.html'; }"
+  
+  test:readme-get-started:
+    cmds:
+    - cmd: "{{.DIR}} grep 'task run-all' README.md | wc -l | { read C; test $C = 1; }"
+    - task: run-all
+    - task: test:most-recent-output-filenames
+    - cmd: "echo 'See bin/html_doc.html and bin/pdf_doc.pdf'"
+
+  test:
+    cmds:
+    - task: test:readme-get-started
   # run:
   #   cmds:
   #     - task: pandoc:html

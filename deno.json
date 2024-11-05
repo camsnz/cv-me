@@ -1,8 +1,8 @@
 {
   "tasks": {
     "dev": "deno task --watch transform",
-    "to-json": "deno run --allow-write=bin/json-content.json src/typescript/to-json.ts",
-    "to-markdown": "deno run --allow-write=bin/markdown-content.md src/typescript/to-markdown.ts"
+    "to-json": "deno run --allow-write=bin/json_blob.json src/typescript/to-json.ts",
+    "to-markdown": "deno run --allow-write=bin/markdown_doc.md src/typescript/to-markdown.ts"
   },
   
   "imports": {
