@@ -2,6 +2,6 @@
 .task/
 .vscode/
 
-inputs/
+input/
 bin/
 tmp/
