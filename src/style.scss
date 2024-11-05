@@ -330,16 +330,18 @@ h3 { // Experience Title
 p {
     margin-bottom: 0.7rem;
 }
-h3 + p > code {
-    &::before {
-        content: " ";
-        min-width: 30%;
-    }
+h3 + p {
+    margin-bottom: 0.9rem;
+
+    width: 100%;
     display: flex;
     justify-content: flex-end;
-    margin-bottom: 0.9rem;
+    flex-wrap: wrap;
+}
+h3 + p > code {
+    display: flex;
+    max-width: 75%;
     text-align: right;
-    overflow-wrap: normal;
 }
 
 
@@ -438,8 +440,6 @@ div.projects {
         }
         th:first-child, td:first-child {
             vertical-align: top;
-            // max-width: 5rem;
-            max-width: fit-content;
             font-family: monospace;
             font-size: 0.8em;
             font-weight: 100;            
@@ -447,9 +447,6 @@ div.projects {
         th:last-child, td:last-child {
             vertical-align: top;
             max-width: 100%;
-            // font-family: monospace;
-            // font-size: 0.8em;
-            // font-weight: 100;
         }
     }
     table, th, td {
