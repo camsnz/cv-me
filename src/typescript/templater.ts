@@ -144,9 +144,13 @@ const filter = () => true
 // const filter = (r:JobRole) => !focusedRoles.includes(r.id)
 const roles = allRoles.filter(filter).sort(sortReverseChron)
 
+// NOTE: table col ratio impacts html: |------|-------|------|
+const tableColRatio = (nums:number[]):string =>
+  nums.map(n => new Array(n).fill("-").join("")).join("|")
+
   const tableHead = `
-| When | Where | What           |
-|------|---------|---------------- |`
+| When | Where | What |
+|${tableColRatio([9,16,23])}|`
 const rowHead = ``
 
 const tableRows = roles.map(r => 

@@ -161,6 +161,7 @@ ul {
     @include ul_bullet_style_of_D();
 }
 
+$printMargin: 15mm; // print page vs html body
 
 @page {
     size: A4;
@@ -168,12 +169,11 @@ ul {
     padding: 0;
     border: 0;
 
-    margin: 5mm;
+    margin: $printMargin;
     background: $paperColor;
-    // margin-top: auto;
-    // margin-bottom: auto;
 }
 body {
+    // (Print) trailing border space
     padding-bottom: 2rem;
 }
 
@@ -183,16 +183,17 @@ body {
         display: flex;
         justify-content: center;
         background: $backdropColor;
-        margin-top: 2rem;
+        margin-top: 3rem; // section above paper presentation
     }
     body {
         width: 210mm;  // A4 width
         min-height: 297mm; // A4 height
         min-height: max-content; // A4 height
-        padding: 20mm;
+
+        // paper presentation feel
+        padding: $printMargin;
         background: $paperColor;
         box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-        margin: 0 auto;
     }
 }
 
@@ -344,8 +345,7 @@ h3 + p > code {
 
 // #####################################################################
 // ## Full History Table ###############################################
-$cellWidth: 1.5rem;
-$cellPad: 0.4rem;
+$cellPad: 0.2rem;
 div.work-history {
     h2 {
         page-break-before: avoid;
@@ -368,18 +368,11 @@ div.work-history {
     }
     thead,tbody tr {
         td {
-            padding: 0;
+            padding: $cellPad;
             font-size: 0.8rem;
             text-align: left;
         }
         td:first-child,td:last-child {
-            max-width: $cellWidth;
-            width: $cellWidth;
-            min-width: $cellWidth;
-            width: fit-content;
-
-            padding: $cellPad;
-
             vertical-align: top;
             font-family: monospace;
             font-size: 0.8em;
@@ -388,9 +381,6 @@ div.work-history {
             color: $color3;
         }
         td:last-child {
-            max-width: $cellWidth * 1.5;
-            width: $cellWidth * 1.5;
-            min-width: $cellWidth * 1.5;
             text-align: right;
         }
     }
