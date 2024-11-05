@@ -72,7 +72,7 @@ const fmtEmployer = (role:JobRole) => {
     return `*${role.companies[0]?.name}*`
   return "";
 }
-const asDate = (val:DateTimeValue):Date => {
+export const asDate = (val:DateTimeValue):Date => {
   if(!val) {
     return new Date(0);
   }
@@ -105,7 +105,7 @@ const fmtShortDate = (date:Date):string => {
   return formatted;
 }
 
-const fmtTimeSpanToShortDate = (span:TimeSpan):string => {
+export const fmtTimeSpanToShortDate = (span:TimeSpan):string => {
   const start = asDate(span.start)
   const end = asDate(span.end)
   if(([start,end] as unknown as string[]).includes("Invalid Date")) {
@@ -114,9 +114,9 @@ const fmtTimeSpanToShortDate = (span:TimeSpan):string => {
   return `${fmtShortDate(start)} - ${fmtShortDate(end)}`
 }
 
-const sortReverseChron = (a:JobRole,b:JobRole) => asDate(b.timespan.start).getTime() - asDate(a.timespan.start).getTime()
+export const sortReverseChron = (a:JobRole,b:JobRole) => asDate(b.timespan.start).getTime() - asDate(a.timespan.start).getTime()
 
-const SummaryAndFocusedRoles = (careerBlurb?: string[], roles:JobRole[], focusedRoles:JobRoleId[]) => {
+const SummaryAndFocusedRoles = (careerBlurb: string[]|undefined, roles:JobRole[], focusedRoles:JobRoleId[]) => {
   const focusedOnly = (r:JobRole) => focusedRoles.includes(r.id)
 
   const content = roles.sort(sortReverseChron).filter(focusedOnly).map(r => `
