@@ -4,6 +4,8 @@ interval: 500ms
 
 env:
   DIR: "cd ${PWD} &&"
+  PDF_FILE: pdf_doc.pdf
+  HTML_FILE: html_doc.html
 
   MARKFILE: markdown_doc.md
 tasks:
@@ -30,14 +32,14 @@ tasks:
       - task: pandoc:exec
         vars: 
           TYPE: pdf
-          OUTFILE: pdf_doc.pdf
+          OUTFILE: "{{.PDF_FILE}}"
         
   pandoc:html:
     cmds:
       - task: pandoc:exec
         vars: 
           TYPE: html5
-          OUTFILE: html_doc.html
+          OUTFILE: "{{.HTML_FILE}}"
 
   pandoc:all:
     cmds:
@@ -64,32 +66,38 @@ tasks:
       - task: pandoc:docker-build
       - task: pandoc:html
       - task: pandoc:pdf
+      - task: print-result-msg
 
   dev:
     watch: true
     cmds:
-      - cmd: deno task to-json
-      - cmd: deno task to-markdown
       - task: sass
       - task: pandoc:html
       - task: pandoc:pdf
     sources:
       - "src/**/*"
       - "inputs/**/*"
+  
+  print-result-msg:
+    cmds:
+    - cmd: "stat -t bin/{{.HTML_FILE}}"
+    - cmd: "stat -t bin/{{.PDF_FILE}}"
+    - cmd: "echo ' > open bin/{{.HTML_FILE}}'"
+    - cmd: "echo ' > open bin/{{.PDF_FILE}}'"
 
   ## Tests ####################################################################
 
   test:most-recent-output-filenames:
     cmds:
-    - cmd: "{{.DIR}} ls -aS1 bin | head -n 2 | grep pdf | { read NAME; test $NAME = 'pdf_doc.pdf'; }"
-    - cmd: "{{.DIR}} ls -aS1 bin | head -n 2 | grep html | { read NAME; test $NAME = 'html_doc.html'; }"
+    - cmd: "{{.DIR}} ls -aS1 bin | head -n 2 | grep pdf | { read NAME; test $NAME = '{{.PDF_FILE}}'; }"
+    - cmd: "{{.DIR}} ls -aS1 bin | head -n 2 | grep html | { read NAME; test $NAME = '{{.HTML_FILE}}'; }"
   
   test:readme-get-started:
     cmds:
     - cmd: "{{.DIR}} grep 'task run-all' README.md | wc -l | { read C; test $C = 1; }"
     - task: run-all
     - task: test:most-recent-output-filenames
-    - cmd: "echo 'See bin/html_doc.html and bin/pdf_doc.pdf'"
+    - task: print-result-msg
 
   test:
     cmds:
