@@ -89,6 +89,12 @@ export const asDate = (val:DateTimeValue):Date => {
   return parse(val, "yyyy-MM-dd", new Date())
 }
 
+type DateFormatOptions = {
+  year?:boolean,
+  month?:boolean,
+  day?:boolean,
+}
+
 const unoDate = new Date(1);
 const fmtShortDate = (date:Date):string => {
   if(unoDate > date) {
@@ -105,6 +111,34 @@ const fmtShortDate = (date:Date):string => {
   return formatted;
 }
 
+const fmtMedDate = (date:Date, options:DateFormatOptions):string => {
+  const fmtOpts = [];
+  if(options.day) {
+    fmtOpts.push("dd");
+  }
+  if(options.month) {
+    fmtOpts.push("LLL");
+  }
+  if(options.year) {
+    fmtOpts.push("yyyy");
+  }
+  const fmtSpec = fmtOpts.join(" ");
+
+  if(unoDate > date) {
+    return "Now"
+  }
+  let formatted;
+  try {
+    formatted = format(date, fmtSpec)//.split(" ").join("'")
+  } catch(e) {
+    console.log({date})
+    console.error(e);
+    throw e;
+  }
+  return formatted;
+}
+
+
 export const fmtTimeSpanToShortDate = (span:TimeSpan):string => {
   const start = asDate(span.start)
   const end = asDate(span.end)
@@ -114,13 +148,24 @@ export const fmtTimeSpanToShortDate = (span:TimeSpan):string => {
   return `${fmtShortDate(start)} - ${fmtShortDate(end)}`
 }
 
+export const fmtTimeSpanToMedDate = (span:TimeSpan, options:DateFormatOptions={month:true,year:true}):string => {
+  const start = asDate(span.start)
+  const end = asDate(span.end)
+  if(([start,end] as unknown as string[]).includes("Invalid Date")) {
+    console.error({span, start, end})
+  }
+  return `${fmtMedDate(start,options)} - ${fmtMedDate(end,options)}`
+}
+
+const fmtDateSpan = fmtTimeSpanToMedDate;
+
 export const sortReverseChron = (a:JobRole,b:JobRole) => asDate(b.timespan.start).getTime() - asDate(a.timespan.start).getTime()
 
 const SummaryAndFocusedRoles = (careerBlurb: string[]|undefined, roles:JobRole[], focusedRoles:JobRoleId[]) => {
   const focusedOnly = (r:JobRole) => focusedRoles.includes(r.id)
 
   const content = roles.sort(sortReverseChron).filter(focusedOnly).map(r => `
-### ${r.roleTitle} ${fmtEmployer(r)} <span>${[r.roleLocations.join(", "),fmtTimeSpanToShortDate(r.timespan)].join(" | ")}</span>
+### ${r.roleTitle} ${fmtEmployer(r)} <span>${[r.roleLocations.join(", "),fmtDateSpan(r.timespan)].join(" | ")}</span>
 
 \`${r.technologies.join(" | ")}\`
 
@@ -131,11 +176,16 @@ ${!r.blurb ? "" : r.blurb.join(`
 ${r.achievements.map(ach => `* ${ach}
 `).join("")}`).join("");
 
-  return `## Summary
+  return `
+<div class="summary">
+
+## Summary
 ${!careerBlurb ? "" : careerBlurb.join(`
 
 `) }
-${content}`;
+${content}
+
+</div>`;
 }
 
 const FullCareerHistory = (allRoles:JobRole[], focusedRoles:JobRoleId[]) => {
@@ -150,16 +200,16 @@ const tableColRatio = (nums:number[]):string =>
 
   const tableHead = `
 | When | Where | What |
-|${tableColRatio([9,16,23])}|`
+|${tableColRatio([11,14,23])}|`
 const rowHead = ``
 
 const tableRows = roles.map(r => 
-  `| ${fmtTimeSpanToShortDate(r.timespan)} | ${r.roleTitle} <br>@ ${fmtEmployer(r)} | ${r.technologies.join(", ")} |
+  `| ${fmtDateSpan(r.timespan)} | ${r.roleTitle} <br>@ ${fmtEmployer(r)} | ${r.technologies.join(", ")} |
 `)
 
-return `
+return `<div class="work-history">
+
 ## Full Career History
-<div class="work-history">
 
 ${tableHead}
 ${tableRows.map(r => `${rowHead}${r}`).join("")}
@@ -171,7 +221,7 @@ ${tableRows.map(r => `${rowHead}${r}`).join("")}
 const academicSection = (education:EducationItem[]) => `
 ## Academic Background
 ${education.map(e => `
-### ${e.qualification} ${!e.title ? "" : `*${e.title}*`} <span>${[e.institution.name,fmtTimeSpanToShortDate(e.timespan)].join(" | ")}</span>
+### ${e.qualification} ${!e.title ? "" : `*${e.title}*`} <span>${[e.institution.name,fmtDateSpan(e.timespan,{year:true})].join(" | ")}</span>
 
 ${!e.achievements ? "" : e.achievements.map(ach => `* ${ach}
 `).join("")}`).join("")}`

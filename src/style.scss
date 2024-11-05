@@ -41,13 +41,13 @@ $boldWeight: 600;
     font-family: 'Source Sans Pro', sans-serif;
     color: $color2;
     font-weight: 300;
-    line-height: 1.1em;
+    line-height: 1.1rem;
     font-size: 11pt;
 }
 @mixin font_style_for_heading {
     font-family: 'Source Sans Pro', sans-serif;
     font-weight: 500;
-    line-height: 1em;
+    line-height: 1rem;
     color: $color1;
 }
 @mixin font_style_for_code {
@@ -83,7 +83,8 @@ body {
 
     background: $bodyBgColor;
     color: $bodyTextColor;
-
+}
+body,section,div {
     @include font_style_for_content();
 }
 h1, h2, h3, h4, h5, h6 {
@@ -184,6 +185,7 @@ body {
         justify-content: center;
         background: $backdropColor;
         margin-top: 3rem; // section above paper presentation
+        margin-bottom: 3rem; // section above paper presentation
     }
     body {
         width: 210mm;  // A4 width
@@ -307,7 +309,7 @@ hgroup {
 // ## Recent Role Title ################################################
 h3 { // Experience Title
     margin-top: 0.9rem;
-    padding-top: 0.5rem;
+    padding-top: 0.5rem; // space for divider line
     padding-bottom: 0.1rem;
 
     border-top: solid thin $dividerColor;
@@ -340,7 +342,7 @@ h3 + p {
 }
 h3 + p > code {
     display: flex;
-    max-width: 75%;
+    max-width: 80%;
     text-align: right;
 }
 
@@ -348,7 +350,9 @@ h3 + p > code {
 // #####################################################################
 // ## Full History Table ###############################################
 $cellPad: 0.2rem;
-div.work-history {
+section.work-history {
+    page-break-before: auto;
+
     h2 {
         page-break-before: avoid;
         page-break-after: avoid;
@@ -387,73 +391,6 @@ div.work-history {
         }
     }
 }
-
-div.projects {
-    padding-top: 0.2rem;
-    // p {
-    //     width: 50%;
-    //     display: inline-flex;
-    //     border: solid thin red;
-    //     font-weight: 700;
-    //     height: 10rem;
-    // }
-    ul {
-        list-style-type: none;
-        padding: 0;
-        margin: 0;
-        border: 0;
-    }
-
-    &> ul {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: space-around;
-
-        &> li {
-            cursor: pointer;
-            text-align: left;
-            margin: 0.2rem;
-            // top: 0;
-            border-collapse: collapse;
-            border: solid 2px $color3;
-            border-radius: 0.4rem;
-            display: block;
-            width: 47%;
-        }
-    }
-
-
-    table {
-        border-collapse: collapse;
-        width: 100%;
-    }
-    thead,tbody tr {
-        
-        td {
-            border: solid thick black;
-            width: 50%;
-            height: 5rem;
-            text-align: center;
-        }
-        th {
-            display: none;
-        }
-        th:first-child, td:first-child {
-            vertical-align: top;
-            font-family: monospace;
-            font-size: 0.8em;
-            font-weight: 100;            
-        }
-        th:last-child, td:last-child {
-            vertical-align: top;
-            max-width: 100%;
-        }
-    }
-    table, th, td {
-        border: 1px solid $tableLineDividerColor;
-    }
-}
-
 
 // #####################################################################
 // ## MISC #############################################################
